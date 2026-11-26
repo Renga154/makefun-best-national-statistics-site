@@ -1,0 +1,6 @@
+[
+  { "file": "1-overview.png", "path": "index.html", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "2-prefectures.png", "path": "prefectures.html", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "3-population.png", "path": "population.html", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "4-phone.png", "path": "index.html", "viewport": { "width": 390, "height": 844 } }
+]
