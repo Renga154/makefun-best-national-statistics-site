@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Society | Japan in Figures</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="index.html">Japan in Figures</a>
+    <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html">Overview</a>
+        <a href="population.html">Population</a>
+        <a href="economy.html">Economy</a>
+        <a href="prefectures.html">Prefectures</a>
+        <a href="society.html" aria-current="page">Society</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" data-page="society">
+  <section class="intro">
+    <p class="eyebrow">Health and education</p>
+    <h1>Society</h1>
+    <p>Life expectancy at birth, registered physicians and university enrollment.</p>
+  </section>
+    <div class="tools">
+      <label>Reference year<select id="society-period"><option>2024</option><option>2022</option></select></label>
+      <button id="society-csv" type="button">Download CSV</button>
+    </div>
+    <section id="society-indicators" class="metrics four" aria-label="Society indicators" aria-live="polite"></section>
+    <details class="panel">
+      <summary>View data table</summary>
+      <table>
+        <caption class="sr-only">Society figures for the selected reference year</caption>
+        <thead><tr><th scope="col">Indicator</th><th scope="col" class="numeric">Value</th><th scope="col">Reference period</th></tr></thead>
+        <tbody id="society-rows"></tbody>
+      </table>
+    </details>
+  <section class="sources" aria-labelledby="sources-title">
+    <h2 id="sources-title">Official sources</h2>
+    <ul id="source-list"></ul>
+  </section>
+</main>
+<footer class="footer"><div class="wrap">Japan in Figures · An independent presentation of official statistics</div></footer>
+</body>
+</html>

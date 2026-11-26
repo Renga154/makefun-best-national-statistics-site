@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Population | Japan in Figures</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="index.html">Japan in Figures</a>
+    <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html">Overview</a>
+        <a href="population.html" aria-current="page">Population</a>
+        <a href="economy.html">Economy</a>
+        <a href="prefectures.html">Prefectures</a>
+        <a href="society.html">Society</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" data-page="population">
+  <section class="intro">
+    <p class="eyebrow">1 October 2024</p>
+    <h1>Population</h1>
+    <p>National population trends and the age structure of Japan.</p>
+  </section>
+    <section id="population-indicators" class="metrics three" aria-label="Key population figures"></section>
+    <div class="dashboard">
+      <figure class="panel">
+        <h2>Population since 1950</h2>
+        <p class="meta">Residents in millions · each observation on 1 October</p>
+        <div id="population-trend"></div><figcaption id="population-caption"></figcaption>
+      </figure>
+      <section class="panel">
+        <h2>Age structure</h2>
+        <p class="meta">Share of residents · 1 Oct 2024</p>
+        <div id="age-chart"></div><dl id="age-breakdown" class="breakdown"></dl>
+        <p class="note">Published percentages are rounded independently.</p>
+      </section>
+    </div>
+  <section class="sources" aria-labelledby="sources-title">
+    <h2 id="sources-title">Official sources</h2>
+    <ul id="source-list"></ul>
+  </section>
+</main>
+<footer class="footer"><div class="wrap">Japan in Figures · An independent presentation of official statistics</div></footer>
+</body>
+</html>

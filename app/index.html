@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Japan in Figures</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="index.html">Japan in Figures</a>
+    <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="population.html">Population</a>
+        <a href="economy.html">Economy</a>
+        <a href="prefectures.html">Prefectures</a>
+        <a href="society.html">Society</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" data-page="index">
+  <section class="intro">
+    <p class="eyebrow">National statistics · 2024 snapshot</p>
+    <h1>Japan in Figures</h1>
+    <p>Population, the economy and daily life across 47 prefectures.</p>
+  </section>
+    <section id="indicators" class="metrics" aria-label="Headline indicators"></section>
+    <div class="dashboard">
+      <div class="stack">
+        <figure class="panel overview-trend">
+          <div class="panel-heading"><h2>Japan’s population</h2><span class="endpoint">2024 · ≈123.80 million</span></div>
+          <p class="meta">Residents in millions · each observation on 1 October</p>
+          <div id="population-trend"></div><figcaption id="population-caption"></figcaption>
+        </figure>
+        <nav class="categories" aria-label="Explore by topic">
+          <a href="population.html"><strong>Population →</strong><small>Long-term trends and age structure</small></a>
+          <a href="economy.html"><strong>Economy →</strong><small>GDP, prices, jobs and trade</small></a>
+          <a href="prefectures.html"><strong>Prefectures →</strong><small>Search and compare all 47</small></a>
+          <a href="society.html"><strong>Society →</strong><small>Life expectancy, health and education</small></a>
+        </nav>
+      </div>
+      <section class="panel">
+        <h2>Most populous prefectures</h2>
+        <p class="meta">Top 10 · thousands of residents · 1 Oct 2024</p>
+        <table class="cover-table">
+          <thead><tr><th scope="col">Rank</th><th scope="col">Prefecture</th><th scope="col"><span class="sr-only">Relative population</span></th><th scope="col" class="numeric">Population</th></tr></thead>
+          <tbody id="cover-ranking"></tbody>
+        </table>
+        <a class="full-link" href="prefectures.html">Explore all 47 prefectures →</a>
+      </section>
+    </div>
+  <section class="sources" aria-labelledby="sources-title">
+    <h2 id="sources-title">Official sources</h2>
+    <ul id="source-list"></ul>
+  </section>
+</main>
+<footer class="footer"><div class="wrap">Japan in Figures · An independent presentation of official statistics</div></footer>
+</body>
+</html>

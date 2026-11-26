@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Economy | Japan in Figures</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="index.html">Japan in Figures</a>
+    <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html">Overview</a>
+        <a href="population.html">Population</a>
+        <a href="economy.html" aria-current="page">Economy</a>
+        <a href="prefectures.html">Prefectures</a>
+        <a href="society.html">Society</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" data-page="economy">
+  <section class="intro">
+    <h1>Economy</h1>
+    <p>Japan’s output, consumer prices, unemployment and merchandise trade.</p>
+  </section>
+    <section id="economy-indicators" class="metrics three" aria-label="Key economic figures"></section>
+    <div class="detail-grid">
+      <figure class="panel">
+        <h2>Nominal GDP</h2><p class="meta">Trillion yen · fiscal years 2019–2024 · 2020 benchmark</p>
+        <div id="gdp-chart"></div><figcaption id="gdp-source"></figcaption>
+      </figure>
+      <figure class="panel">
+        <h2>Consumer prices and unemployment</h2><p class="meta">Percent · calendar years 2020–2024</p>
+        <p class="legend"><span>CPI change from previous annual average</span><span>Annual unemployment rate</span></p>
+        <div id="rates-chart"></div><figcaption id="rates-sources"></figcaption>
+      </figure>
+    </div>
+    <section class="sources" aria-labelledby="trade-title">
+      <h2 id="trade-title">Merchandise trade</h2><p class="meta">Calendar 2024 · Japan Customs</p>
+      <p>Exports <strong>≈¥107.09 trillion</strong> · Imports <strong>≈¥112.72 trillion</strong></p>
+    </section>
+  <section class="sources" aria-labelledby="sources-title">
+    <h2 id="sources-title">Official sources</h2>
+    <ul id="source-list"></ul>
+  </section>
+</main>
+<footer class="footer"><div class="wrap">Japan in Figures · An independent presentation of official statistics</div></footer>
+</body>
+</html>
