@@ -26,20 +26,38 @@
     <p>Japan’s output, consumer prices, unemployment and merchandise trade.</p>
   </section>
     <section id="economy-indicators" class="metrics three" aria-label="Key economic figures"></section>
-    <div class="detail-grid">
+    <div class="detail-grid economy-charts">
       <figure class="panel">
-        <h2>Nominal GDP</h2><p class="meta">Trillion yen · fiscal years 2019–2024 · 2020 benchmark</p>
+        <h2>Nominal GDP by calendar year</h2>
+        <p class="meta">Trillion yen · 2010–2025 · November 2026 release</p>
         <div id="gdp-chart"></div><figcaption id="gdp-source"></figcaption>
       </figure>
       <figure class="panel">
-        <h2>Consumer prices and unemployment</h2><p class="meta">Percent · calendar years 2020–2024</p>
-        <p class="legend"><span>CPI change from previous annual average</span><span>Annual unemployment rate</span></p>
+        <h2>Nominal GDP by quarter</h2>
+        <p class="meta">Trillion yen at a seasonally adjusted annual rate · Q4 2022–Q3 2026</p>
+        <div id="gdp-quarterly-chart"></div><figcaption id="gdp-quarterly-source"></figcaption>
+      </figure>
+      <figure class="panel">
+        <h2>Consumer price inflation</h2>
+        <p class="meta">Year-over-year change (%) · Nov 2024–Oct 2026</p>
+        <p class="legend"><span>All items</span><span>Core (excluding fresh food)</span></p>
         <div id="rates-chart"></div><figcaption id="rates-sources"></figcaption>
       </figure>
+      <figure class="panel">
+        <h2>Unemployment rate</h2>
+        <p class="meta">Percent · seasonally adjusted · Oct 2024–Sep 2026</p>
+        <div id="unemployment-chart"></div><figcaption id="unemployment-source"></figcaption>
+      </figure>
     </div>
-    <section class="sources" aria-labelledby="trade-title">
-      <h2 id="trade-title">Merchandise trade</h2><p class="meta">Calendar 2024 · Japan Customs</p>
-      <p>Exports <strong>≈¥107.09 trillion</strong> · Imports <strong>≈¥112.72 trillion</strong></p>
+    <section class="panel trade-panel" aria-labelledby="trade-title">
+      <div>
+        <h2 id="trade-title">Merchandise trade</h2>
+        <p class="meta">Calendar 2024 · <a href="https://www.customs.go.jp/toukei/suii/html/nenbet.htm">Japan Customs</a></p>
+      </div>
+      <dl class="trade-values">
+        <div><dt>Exports</dt><dd class="value">≈¥107.09 trillion</dd></div>
+        <div><dt>Imports</dt><dd class="value">≈¥112.72 trillion</dd></div>
+      </dl>
     </section>
   <section class="sources" aria-labelledby="sources-title">
     <h2 id="sources-title">Official sources</h2>

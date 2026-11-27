@@ -1,12 +1,14 @@
 import { sources } from './data.js';
+import { sources2 } from './data2.js';
 
 export const number = new Intl.NumberFormat('en').format;
 
-export function source(key, label = sources[key][0]) {
-  return `<a href="${sources[key][1]}">${label}</a>`;
+export function source(key, label) {
+  const [title, url] = sources2[key] ?? sources[key];
+  return `<a href="${url}">${label ?? title}</a>`;
 }
 
-export function lineChart({ series, ticks, years, label, area = false }) {
+export function lineChart({ series, ticks, years, formatPeriod = String, label, area = false }) {
   const width = 540;
   const left = 42;
   const right = 516;
@@ -23,7 +25,7 @@ export function lineChart({ series, ticks, years, label, area = false }) {
     <path class="gridline" d="M${left} ${y(value)}H${right}"/>
     <text x="${left - 8}" y="${y(value) + 4}" text-anchor="end">${value}</text>
   `).join('');
-  const labels = years.map(year => `<text x="${x(year)}" y="195" text-anchor="middle">${year}</text>`).join('');
+  const labels = years.map(year => `<text x="${x(year)}" y="195" text-anchor="middle">${formatPeriod(year)}</text>`).join('');
   const lines = series.map((points, index) => {
     const path = points.map(([year, value]) => `${x(year)},${y(value)}`).join(' L');
     const [endYear, endValue] = points.at(-1);
@@ -36,21 +38,5 @@ export function lineChart({ series, ticks, years, label, area = false }) {
 
   return `<svg class="line-chart" viewBox="0 0 ${width} 206" role="img" aria-label="${label}">
     <title>${label}</title>${grid}${labels}${lines}
-  </svg>`;
-}
-
-export function rankingChart(rows) {
-  const maximum = rows[0].thousands;
-  const rowHeight = 28;
-  const height = rows.length * rowHeight + 8;
-  const bars = rows.map(({ name, thousands }, index) => {
-    const y = 4 + index * rowHeight;
-    return `<text x="0" y="${y + 15}">${name}</text>
-      <rect class="bar-track" x="92" y="${y + 4}" width="168" height="13" rx="2"/>
-      <rect class="chart-point" x="92" y="${y + 4}" width="${168 * thousands / maximum}" height="13" rx="2"/>
-      <text x="322" y="${y + 15}" text-anchor="end">${number(thousands)}</text>`;
-  }).join('');
-  return `<svg class="ranking-chart" viewBox="0 0 324 ${height}" role="img" aria-label="Largest matching prefectures by population, in thousands">
-    <title>Largest matching prefectures by population, in thousands</title>${bars}
   </svg>`;
 }

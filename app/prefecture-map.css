@@ -1,0 +1,60 @@
+.prefecture-map {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 3px;
+  isolation: isolate;
+  margin: 1rem 0 0.8rem;
+}
+.map-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 24px;
+  aspect-ratio: 1.5;
+  font-size: clamp(8px, 0.85vw, 12px);
+  font-weight: 700;
+  border-radius: 3px;
+  color: #231512;
+}
+.band-0 { background: #f4dcd3; }
+.band-1 { background: #e9b5a2; }
+.band-2 { background: #c77b67; }
+.band-3 { background: #963f32; color: white; }
+.band-4 { background: #62251d; color: white; }
+.band-missing { background: #e8e8e8; }
+.map-tooltip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: none;
+  white-space: nowrap;
+  border-radius: 3px;
+  padding: 0.35rem 0.55rem;
+  background: #231512;
+  color: white;
+  font-size: 0.75rem;
+}
+.map-tile:hover, .map-tile:focus { z-index: 1; outline: 2px solid #231512; outline-offset: 1px; }
+.map-tile:hover .map-tooltip, .map-tile:focus .map-tooltip { display: block; }
+.map-scale { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; }
+.map-ramp {
+  display: inline-block;
+  width: 6rem;
+  height: 0.5rem;
+  background: linear-gradient(90deg, #f4dcd3 20%, #e9b5a2 20% 40%, #c77b67 40% 60%, #963f32 60% 80%, #62251d 80%);
+}
+.pref-layout { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); align-items: start; }
+.pref-table { max-height: 29rem; overflow: auto; }
+.pref-table thead { position: sticky; top: 0; background: var(--paper, #fff); z-index: 1; }
+.pref-ranking { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; list-style: none; padding: 0; }
+.pref-ranking li { font-size: 0.84rem; }
+.pref-ranking b { margin-right: 0.25rem; }
+.map-compact .map-tile { min-height: 17px; }
+@media (max-width: 860px) {
+  .pref-layout { grid-template-columns: 1fr; }
+}
+.edge-left .map-tooltip { left: 0; transform: none; }
+.edge-right .map-tooltip { right: 0; left: auto; transform: none; }
+.pref-layout figure > label { display: inline-flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem; font-size: 0.84rem; }

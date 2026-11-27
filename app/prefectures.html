@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Prefectures | Japan in Figures</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="prefecture-map.css">
   <script type="module" src="main.js"></script>
 </head>
 <body>
@@ -22,34 +23,39 @@
 </header>
 <main class="wrap" data-page="prefectures">
   <section class="intro">
-    <p class="eyebrow">47 prefectures · 1 October 2024</p>
+    <p class="eyebrow">47 prefectures</p>
     <h1>Prefectures</h1>
-    <p>Search the population estimates in English or Japanese.</p>
+    <p>Compare regional statistics and search in English or Japanese.</p>
   </section>
-    <div class="detail-grid pref-grid">
-      <section class="panel">
-        <h2>Population by prefecture</h2>
-        <div class="tools">
-          <label>Search prefectures<input id="pref-search" type="search" placeholder="Tokyo or 東京都"></label>
-          <label>Sort by<select id="pref-sort">
-            <option value="largest">Population ↓</option>
-            <option value="smallest">Population ↑</option>
-            <option value="name">English name A–Z</option>
-          </select></label>
-          <button id="pref-csv" type="button">Download CSV</button>
-        </div>
-        <p id="pref-count" class="meta" role="status"></p>
+  <div class="detail-grid pref-layout">
+    <figure class="panel">
+      <h2 id="pref-map-title">Population by prefecture</h2>
+      <label>Indicator <select id="pref-indicator"></select></label>
+      <div id="pref-map"></div>
+      <figcaption id="pref-source"></figcaption>
+      <ol id="pref-ranking" class="pref-ranking" aria-label="Three highest values nationally"></ol>
+    </figure>
+    <section class="panel">
+      <h2>Prefecture data</h2>
+      <div class="tools">
+        <label>Search prefectures<input id="pref-search" type="search" placeholder="Tokyo or 東京都"></label>
+        <label>Sort by<select id="pref-sort">
+          <option value="largest">Highest first</option>
+          <option value="smallest">Lowest first</option>
+          <option value="name">English name A–Z</option>
+        </select></label>
+        <button id="pref-csv" type="button">Download CSV</button>
+      </div>
+      <p id="pref-count" class="meta" role="status"></p>
+      <div class="pref-table" tabindex="0" role="region" aria-label="Prefecture indicator table">
         <table>
-          <caption class="sr-only">Prefecture population, 1 October 2024</caption>
-          <thead><tr><th scope="col">Rank</th><th scope="col">Prefecture</th><th scope="col" lang="ja">都道府県</th><th scope="col" class="numeric">Population (000s)</th></tr></thead>
+          <caption id="pref-caption" class="sr-only"></caption>
+          <thead><tr><th scope="col">Rank</th><th scope="col">Prefecture</th><th scope="col" lang="ja">都道府県</th><th scope="col" class="numeric" id="pref-unit"></th></tr></thead>
           <tbody id="pref-rows"></tbody>
         </table>
-      </section>
-      <figure class="panel">
-        <h2>Largest matching prefectures</h2><p class="meta">Up to 10 matches · thousands of residents · 1 Oct 2024</p>
-        <div id="pref-chart"></div><figcaption id="pref-source"></figcaption>
-      </figure>
-    </div>
+      </div>
+    </section>
+  </div>
   <section class="sources" aria-labelledby="sources-title">
     <h2 id="sources-title">Official sources</h2>
     <ul id="source-list"></ul>

@@ -1,14 +1,16 @@
-import { ageGroups, cpi, gdp, population, prefectures, society, sources, unemployment } from './data.js';
-import { lineChart, number, rankingChart, source } from './views.js';
+import { indicators, tileMap } from './prefecture-map.js';
+import { populationMap } from './prefecture-map.js';
+import { ageGroups, population, prefectures, society, sources } from './data.js';
+import { CPI_MONTHLY, GDP_ANNUAL, GDP_QUARTERLY, UNEMPLOYMENT_MONTHLY } from './data2.js';
+import { lineChart, number, source } from './views.js';
 
 const el = id => document.getElementById(id);
 const put = (id, html) => { el(id).innerHTML = html; };
 const populationDate = '1 Oct 2024';
-const populationCsvDate = '2024-10-01';
 
 const populationMetric = ['Population', '≈123.80 million', populationDate, 'population', 'Statistics Bureau'];
 const economicMetrics = [
-  ['Nominal GDP', '≈¥642.4 trillion', 'FY2024 · Apr 2024–Mar 2025', 'gdp', 'Cabinet Office'],
+  ['Nominal GDP', `≈¥${GDP_ANNUAL.find(([year]) => year === 2024)[1].toFixed(1)} trillion`, 'Calendar 2024', 'gdpAnnual', 'Cabinet Office'],
   ['All-items CPI change', '+2.7%', 'Calendar 2024', 'cpi', 'Statistics Bureau'],
   ['Unemployment rate', '2.5%', 'Calendar 2024', 'labor', 'Statistics Bureau'],
 ];
@@ -39,21 +41,19 @@ function renderPopulationTrend() {
 }
 
 function renderOverview() {
-  const { men, women } = society[2024];
+  const { men, women, physicians, students } = society[2024];
   cards('indicators', [
     populationMetric, ...economicMetrics,
     ['Life expectancy at birth', `${men} / ${women}`, 'Men / women · years · 2024', 'life', 'MHLW'],
   ]);
   renderPopulationTrend();
-  put('cover-ranking', prefectures.slice(0, 10).map(({ name, rank, thousands }) => `
-    <tr><td>${rank}</td><th scope="row">${name}</th>
-      <td><svg class="cover-bar" viewBox="0 0 100 5" preserveAspectRatio="none" aria-hidden="true">
-        <rect class="bar-track" width="100" height="5"/>
-        <rect class="chart-point" width="${100 * thousands / prefectures[0].thousands}" height="5"/>
-      </svg></td>
-      <td class="numeric">${number(thousands)}</td>
-    </tr>`).join(''));
-  sourceList(['population', 'gdp', 'cpi', 'labor', 'life']);
+  put('cover-map', populationMap());
+  cards('overview-indicators', [
+    ['Residents aged 65 or older', `${ageGroups.at(-1)[2]}%`, populationDate, 'population', 'Statistics Bureau'],
+    ['Registered physicians', number(physicians), '31 Dec 2024', 'physicians', 'MHLW'],
+    ['University undergraduates', number(students), '1 May 2024', 'education2024', 'MEXT'],
+  ]);
+  sourceList(['population', 'gdpAnnual', 'cpi', 'labor', 'life', 'physicians', 'education2024']);
 }
 
 function renderPopulation() {
@@ -79,18 +79,46 @@ function renderPopulation() {
 }
 
 function renderEconomy() {
-  cards('economy-indicators', economicMetrics);
+  const [year, annual] = GDP_ANNUAL.at(-1);
+  const [cpiMonth, inflation] = CPI_MONTHLY.at(-1);
+  const [laborMonth, unemployment] = UNEMPLOYMENT_MONTHLY.at(-1);
+  const monthFormat = new Intl.DateTimeFormat('en-GB', {
+    month: 'short', year: 'numeric', timeZone: 'UTC',
+  });
+  const monthLabel = period => monthFormat.format(new Date(`${period}-01T00:00:00Z`));
+  cards('economy-indicators', [
+    ['Nominal GDP', `≈¥${annual.toFixed(1)} trillion`, `Calendar ${year}`, 'gdpAnnual', 'Cabinet Office'],
+    ['All-items CPI change', `+${inflation.toFixed(1)}%`, `${monthLabel(cpiMonth)} · year over year`, 'cpiMonthly', 'Statistics Bureau'],
+    ['Unemployment rate', `${unemployment.toFixed(1)}%`, `${monthLabel(laborMonth)} · seasonally adjusted`, 'laborMonthly', 'Statistics Bureau'],
+  ]);
   put('gdp-chart', lineChart({
-    series: [gdp], ticks: [540, 570, 600, 630, 660], years: gdp.map(([year]) => year),
-    label: 'Nominal GDP rose from 570.6 trillion yen in FY2019 to 642.4 trillion yen in FY2024.',
+    series: [GDP_ANNUAL], ticks: [500, 550, 600, 650, 700], years: [2010, 2015, 2020, 2025],
+    label: 'Calendar-year nominal GDP rose from 510.1 trillion yen in 2010 to 666.4 trillion yen in 2025.',
   }));
+  put('gdp-quarterly-chart', lineChart({
+    series: [GDP_QUARTERLY.map(([, value], index) => [index, value])],
+    ticks: [575, 600, 625, 650, 675, 700], years: [0, 4, 8, 12, 15],
+    formatPeriod: index => GDP_QUARTERLY[index][0].replace('Q', ' Q'),
+    label: 'Quarterly nominal GDP at a seasonally adjusted annual rate rose from 594.2 trillion yen in Q4 2022 to a preliminary 692.7 trillion yen in Q3 2026.',
+  }));
+  const monthlyTicks = [0, 6, 12, 18, 23];
   put('rates-chart', lineChart({
-    series: [cpi, unemployment], ticks: [-1, 0, 1, 2, 3, 4], years: cpi.map(([year]) => year),
-    label: 'In 2024 annual CPI increased 2.7 percent and the annual unemployment rate was 2.5 percent.',
+    series: [1, 2].map(column => CPI_MONTHLY.map((row, index) => [index, row[column]])),
+    ticks: [1, 2, 3, 4, 5], years: monthlyTicks,
+    formatPeriod: index => monthLabel(CPI_MONTHLY[index][0]),
+    label: 'October 2026 inflation was 2.3 percent for all items and 2.2 percent excluding fresh food, year over year.',
   }));
-  put('gdp-source', source('gdp'));
-  put('rates-sources', `${source('cpi')} · ${source('labor')}`);
-  sourceList(['gdp', 'cpi', 'labor', 'trade']);
+  put('unemployment-chart', lineChart({
+    series: [UNEMPLOYMENT_MONTHLY.map(([, value], index) => [index, value])],
+    ticks: [2.2, 2.4, 2.6, 2.8, 3.0], years: monthlyTicks,
+    formatPeriod: index => monthLabel(UNEMPLOYMENT_MONTHLY[index][0]),
+    label: 'Seasonally adjusted unemployment ranged from 2.4 to 2.7 percent from October 2024 to September 2026.',
+  }));
+  put('gdp-source', `${source('gdpAnnual', 'Cabinet Office')} · This series uses calendar years. The earlier site figures appear to use fiscal years.`);
+  put('gdp-quarterly-source', `${source('gdpQuarterly', 'Cabinet Office')} · Q3 2026 is the first preliminary estimate.`);
+  put('rates-sources', `${source('cpiMonthly', 'Statistics Bureau · e-Stat')} · 2025 base from Jan 2026, 2020 base before.`);
+  put('unemployment-source', source('laborMonthly'));
+  sourceList(['gdpAnnual', 'gdpQuarterly', 'cpiMonthly', 'laborMonthly', 'trade']);
 }
 
 function downloadCsv(filename, rows) {
@@ -108,49 +136,77 @@ function downloadCsv(filename, rows) {
 function renderPrefectures() {
   const search = el('pref-search');
   const sort = el('pref-sort');
+  const selection = el('pref-indicator');
   const download = el('pref-csv');
   const fold = text => text.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().trim();
-  const matches = () => {
-    const query = fold(search.value);
-    return prefectures.filter(({ name, japanese }) => fold(name).includes(query) || fold(japanese).includes(query));
-  };
+  const byName = (a, b) => a.name.localeCompare(b.name, 'en');
+  const valueLabel = ({ label, unit }) => `${label} (${unit})`;
   const comparisons = {
     largest: (a, b) => a.rank - b.rank,
     smallest: (a, b) => b.rank - a.rank,
-    name: (a, b) => a.name.localeCompare(b.name, 'en'),
+    name: byName,
   };
-  const tableRows = () => matches().sort(comparisons[sort.value]);
+  let indicator;
+  let ranked;
+  let visibleRows;
 
-  function update() {
-    const rows = tableRows();
-    const ranked = matches().slice(0, 10);
-    el('pref-count').textContent = `${rows.length} of ${prefectures.length} prefectures`;
-    download.disabled = rows.length === 0;
-    put('pref-rows', rows.map(({ rank, name, japanese, thousands }) => `
-      <tr><td>${rank}</td><th scope="row">${name}</th><td lang="ja">${japanese}</td>
-      <td class="numeric">${number(thousands)}</td></tr>`).join(''));
-    put('pref-chart', ranked.length ? rankingChart(ranked) : '<p class="note">No prefectures match this search.</p>');
+  function updateTable() {
+    const query = fold(search.value);
+    visibleRows = ranked.filter(({ name, japanese }) =>
+      fold(name).includes(query) || fold(japanese).includes(query));
+    visibleRows.sort((a, b) => {
+      if (sort.value !== 'name' && a.known !== b.known) return Number(b.known) - Number(a.known);
+      return comparisons[sort.value](a, b);
+    });
+    el('pref-count').textContent = `${visibleRows.length} of ${prefectures.length} prefectures`;
+    download.disabled = visibleRows.length === 0;
+    put('pref-rows', visibleRows.map(({ rank, name, japanese, value, known }) => `
+      <tr><td>${rank || '—'}</td><th scope="row">${name}</th><td lang="ja">${japanese}</td>
+      <td class="numeric">${known ? number(value) : '—'}</td></tr>`).join(''));
   }
 
-  search.addEventListener('input', update);
-  sort.addEventListener('change', update);
+  function updateIndicator() {
+    indicator = indicators[selection.value];
+    ranked = prefectures.map(prefecture => {
+      const value = indicator.value(prefecture);
+      return { ...prefecture, value, known: Number.isFinite(value) };
+    }).sort((a, b) => (b.known ? b.value : -Infinity) - (a.known ? a.value : -Infinity) || byName(a, b));
+    ranked.forEach((row, index) => { row.rank = row.known ? index + 1 : 0; });
+    el('pref-map-title').textContent = `${indicator.label} by prefecture`;
+    el('pref-unit').textContent = valueLabel(indicator);
+    el('pref-caption').textContent = `${valueLabel(indicator)} · ${indicator.date}`;
+    put('pref-map', tileMap(prefectures, indicator));
+    const sourceLinks = [indicator.source, indicator.additionalSource].filter(Boolean);
+    el('pref-source').textContent = [`Reference period · ${indicator.date}`, indicator.note].filter(Boolean).join(' · ');
+    put('source-list', sourceLinks.map(([label, url]) => `<li><a href="${url}">${label}</a></li>`).join(''));
+    put('pref-ranking', ranked.filter(row => row.known).slice(0, 3).map(({ rank, name, value }) =>
+      `<li><b>${rank}</b> ${name} · ${number(value)}</li>`).join(''));
+    updateTable();
+  }
+
+  selection.addEventListener('change', updateIndicator);
+  search.addEventListener('input', updateTable);
+  sort.addEventListener('change', updateTable);
   download.addEventListener('click', () => {
-    const rows = tableRows().map(({ rank, name, japanese, thousands }) =>
-      [rank, name, japanese, thousands, populationCsvDate, sources.population[1]]);
-    downloadCsv('japan-prefectures-2024.csv', [
-      ['National rank', 'Prefecture', '都道府県', 'Population (thousands)', 'Reference date', 'Source URL'],
-      ...rows,
+    const sourceColumns = ['Source URL'];
+    const sourceUrls = [indicator.source[1]];
+    if (indicator.additionalSource) {
+      sourceColumns.push('Additional source URL');
+      sourceUrls.push(indicator.additionalSource[1]);
+    }
+    downloadCsv(`japan-prefectures-${selection.value}-${indicator.date}.csv`, [
+      ['National rank', 'Prefecture', '都道府県', valueLabel(indicator), 'Reference period', ...sourceColumns],
+      ...visibleRows.map(({ rank, name, japanese, value, known }) =>
+        [rank || '', name, japanese, known ? value : '', indicator.date, ...sourceUrls]),
     ]);
   });
-  put('pref-source', source('population', 'Statistics Bureau, prefecture population table'));
-  sourceList(['population']);
-  update();
+  selection.replaceChildren(...Object.entries(indicators).map(([id, { label }]) => new Option(label, id)));
+  updateIndicator();
 }
 
 function renderSociety() {
   const period = el('society-period');
-  function rows() {
-    const year = period.value;
+  function rows(year = period.value) {
     const { men, women, physicians, students } = society[year];
     return [
       ['Life expectancy at birth, men', men.toFixed(2), 'years', `Calendar ${year}`, 'life', 'MHLW'],
@@ -164,11 +220,15 @@ function renderSociety() {
     const selected = rows();
     cards('society-indicators', selected.map(([name, value, unit, date, key, agency]) =>
       [name, display(value, unit), date, key, agency]));
-    put('society-rows', selected.map(([name, value, unit, date, key, agency]) =>
-      `<tr><th scope="row">${name}</th><td class="numeric">${display(value, unit)}</td>
-      <td>${date}<br>${source(key, agency)}</td></tr>`).join(''));
-    sourceList(['life', 'physicians', `education${period.value}`]);
   }
+
+  const current = rows('2024');
+  const previous = rows('2022');
+  const referencePeriods = ['Calendar year', 'Calendar year', '31 December', '1 May'];
+  put('society-rows', current.map(([name, value, unit], index) =>
+    `<tr><th scope="row">${name}</th><td class="numeric">${display(previous[index][1], unit)}</td>
+    <td class="numeric">${display(value, unit)}</td><td>${referencePeriods[index]}</td></tr>`).join(''));
+  sourceList(['life', 'physicians', 'education2022', 'education2024']);
   period.addEventListener('change', update);
   el('society-csv').addEventListener('click', () => downloadCsv(`japan-society-${period.value}.csv`, [
     ['Indicator', 'Value', 'Unit', 'Reference period', 'Source URL'],

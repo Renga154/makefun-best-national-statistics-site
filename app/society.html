@@ -31,14 +31,17 @@
       <button id="society-csv" type="button">Download CSV</button>
     </div>
     <section id="society-indicators" class="metrics four" aria-label="Society indicators" aria-live="polite"></section>
-    <details class="panel">
-      <summary>View data table</summary>
+    <section class="panel society-comparison" aria-labelledby="society-comparison-title">
+      <h2 id="society-comparison-title">2022 and 2024 compared</h2>
       <table>
-        <caption class="sr-only">Society figures for the selected reference year</caption>
-        <thead><tr><th scope="col">Indicator</th><th scope="col" class="numeric">Value</th><th scope="col">Reference period</th></tr></thead>
+        <caption class="sr-only">Society indicators by reference year</caption>
+        <thead>
+          <tr><th scope="col">Indicator</th><th scope="col" class="numeric">2022</th>
+            <th scope="col" class="numeric">2024</th><th scope="col">Reference period</th></tr>
+        </thead>
         <tbody id="society-rows"></tbody>
       </table>
-    </details>
+    </section>
   <section class="sources" aria-labelledby="sources-title">
     <h2 id="sources-title">Official sources</h2>
     <ul id="source-list"></ul>
