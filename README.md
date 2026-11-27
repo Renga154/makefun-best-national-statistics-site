@@ -4,11 +4,13 @@
 
 Japan in Figures presents official Japanese statistics across five pages. Figures are labeled with their source and reference date or period.
 
-- [Overview](app/index.html) brings together five headline indicators, a 1950–2024 population trend, and the ten most populous prefectures.
+- [Overview](app/index.html) pairs a 1950–2024 population trend with a prefecture tile map and sourced national indicators.
 - [Population](app/population.html) shows the national population trend and the age structure as of 1 October 2024.
-- [Economy](app/economy.html) covers nominal GDP, consumer price changes, unemployment, and merchandise trade.
-- [Prefectures](app/prefectures.html) lists all 47 prefectures. Search in English or Japanese, sort by population or name, see the largest matches in a chart, and export filtered rows as CSV.
-- [Society](app/society.html) shows life expectancy, registered physicians, and undergraduate enrollment for 2022 and 2024, with an expandable data table and CSV export.
+- [Economy](app/economy.html) charts calendar-year nominal GDP, annualized quarterly nominal GDP, monthly all-items and core CPI changes, and monthly seasonally adjusted unemployment. It also summarizes merchandise trade.
+- [Prefectures](app/prefectures.html) maps all 47 prefectures by population, population change, share aged 65 or older, per-capita prefectural income, area, and population density. The selected indicator drives the ranking, searchable and sortable table, and CSV export.
+- [Society](app/society.html) shows life expectancy, registered physicians, and undergraduate enrollment for 2022 and 2024, with a side-by-side comparison and CSV export.
+
+See [data sources and methodology](DATA_SOURCES.md) for reference periods, definitions, and series caveats.
 
 The site works offline when served locally. Plain HTML, CSS, and JavaScript render the bundled data and inline SVG charts.
 
